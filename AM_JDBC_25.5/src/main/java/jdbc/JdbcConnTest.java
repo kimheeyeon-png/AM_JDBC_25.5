@@ -6,32 +6,26 @@ import java.sql.SQLException;
 
 public class JdbcConnTest {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/test";
-        String user = "root";
-        String password = "";
 
-        // JDBC 드라이버 로드
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch(ClassNotFoundException e) {
-            System.out.println("JDBC 드라이버 로드하는데 문제 발생 : " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        // 접속
-        Connection con = null;
+        Connection conn = null;
 
         try {
-            con = DriverManager.getConnection(url, user, password);
-            System.out.println("연결 완료");
+            Class.forName("org.mariadb.jdbc.Driver");
+            String url = "jdbc:mariadb://127.0.0.1:3306/AM_JDBC_2025_05?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
+            conn = DriverManager.getConnection(url, "root", "");
+            System.out.println("연결 성공!");
+        } catch (ClassNotFoundException e) {
+            System.out.println("드라이버 로딩 실패" + e);
         } catch (SQLException e) {
-            System.out.println("연결 오류 : " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("에러 : " + e);
+        } finally {
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-        // 접속 종료
-        try {
-            if (con != null) con.close();
-        } catch (SQLException e) {}
     }
 }
