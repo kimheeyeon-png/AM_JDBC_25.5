@@ -7,12 +7,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("== 프로그램 시작 ==");
-
         Scanner sc = new Scanner(System.in);
-        int lastId = 0;
+        int lastId = 0; // 등록할 때마다 하나씩 증가해야 하니까
         List<Article> articleList = new ArrayList<>();
 
+        System.out.println("== 프로그램 시작 ==");
 
         while(true){
             System.out.print("명령어) ");
@@ -32,12 +31,12 @@ public class Main {
                 Article addArticle = new Article(lastId, title, body);
                 articleList.add(addArticle);
 
-                System.out.printf("%d번 게시글이 등록되었습니다.", lastId);
+                System.out.printf("%d번 게시글이 등록되었습니다.\n", lastId);
             }
             else if (cmd.equals("article list")){
-                System.out.println("번호     /     제목 ");
-                for (int i = articleList.size() - 1; i >= 0; i--){
-                    System.out.printf("%d     /     %s\n", articleList.get(i).getId(), articleList.get(i).getTitle());
+                System.out.println("번호    /     제목");
+                for(int i = articleList.size() - 1; i >= 0; i--){
+                    System.out.printf("%d      /   %s\n", articleList.get(i).getId(), articleList.get(i).getTitle());
                 }
             }
         }
