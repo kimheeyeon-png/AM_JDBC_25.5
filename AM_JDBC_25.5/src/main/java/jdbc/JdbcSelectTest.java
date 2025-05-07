@@ -1,12 +1,18 @@
 package jdbc;
 
+import koreaIT.Article;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JdbcSelectTest {
     public static void main(String[] args) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
+        List<Article> articleList = new ArrayList<>();
 
         try {
             Class.forName("org.mariadb.jdbc.Driver");
@@ -24,7 +30,7 @@ public class JdbcSelectTest {
             pstmt = conn.prepareStatement(sql);
 
             rs = pstmt.executeQuery();
-            System.out.println(rs.next());
+    //      System.out.println(rs.next());
 
             while(rs.next()){
                 int id = rs.getInt("id");
@@ -33,11 +39,14 @@ public class JdbcSelectTest {
                 String title = rs.getString("title");
                 String body = rs.getString("body");
 
-                System.out.printf("%d, %s, %s, %s, %s\n", id, regDate, updateDate, title, body);
+
+                Article article = new Article(id, regDate, updateDate, title, body);
+
+                System.out.printf("%d, %s, %s, %s, %s\n", article.getId(), article.getRegDate(), article.getUpdateDate(), article.getTitle(), article.getBody());
+
+                articleList.add(article);
+
             }
-
-
-
 
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로딩 실패" + e);
@@ -47,6 +56,20 @@ public class JdbcSelectTest {
             try {
                 if (conn != null && !conn.isClosed()) {
                     conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (pstmt != null && !pstmt.isClosed()) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
