@@ -54,15 +54,15 @@ public class App {
                 }
             }
             // DB connection 까지
-
         }
-
     }
 
     private int doAction(Connection conn, Scanner sc, String cmd) {
         if (cmd.equals("exit")) {
             return -1;
-        } else if (cmd.startsWith("article modify")) {
+
+        }
+        else if (cmd.startsWith("article delete")){
             int id = 0;
 
             //parsing
@@ -71,20 +71,89 @@ public class App {
             } catch (Exception e) {
                 System.out.println("정수 입력하세요");
             }
-            // parsing 까지
+            //parsing 까지
 
-            // 수정할 글 유무체크
+            // 글 유무체크
             SecSql sql = new SecSql();
             sql.append("SELECT *");
             sql.append("FROM `article`");
-            sql.append("WHERE `id` = ?,", id);
+            sql.append("WHERE `id` = ?", id);
 
             Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-            if (articleMap.isEmpty()){
+            if(articleMap.isEmpty()){
                 System.out.printf("%d번 글은 없습니다.\n", id);
                 return 0;
             }
-            // 수정할 글 유무체크 끝
+            // 글 유무체크 끝
+
+            sql = new SecSql();
+            sql.append("DELETE FROM `article`");
+            sql.append("WHERE `id` = ?", id);
+
+            DBUtil.delete(conn, sql);
+
+            System.out.printf("%d번 게시글이 삭제되었습니다.\n", id);
+
+        }
+        else if(cmd.startsWith("article detail")){
+            int id = 0;
+
+            //parsing
+            try {
+                id = Integer.parseInt(cmd.split(" ")[2]);
+            } catch (Exception e) {
+                System.out.println("정수 입력하세요");
+            }
+            //parsing 까지
+
+            // 글 유무체크
+            SecSql sql = new SecSql();
+            sql.append("SELECT *");
+            sql.append("FROM `article`");
+            sql.append("WHERE `id` = ?", id);
+
+            Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+            if(articleMap.isEmpty()){
+                System.out.printf("%d번 글은 없습니다.\n", id);
+                return 0;
+            }
+            // 글 유무체크 끝
+
+            System.out.println("== 상세보기 ==");
+
+            Article article = new Article(articleMap);
+
+            System.out.println("번호 : " + article.getId());
+            System.out.println("등록날짜 : " +  article.getRegDate());
+            System.out.println("수정날짜 : " +  article.getUpdateDate());
+            System.out.println("제목 : " +  article.getTitle());
+            System.out.println("내용 : " +  article.getBody());
+
+        }
+        else if (cmd.startsWith("article modify")) {
+            int id = 0;
+
+            //parsing
+            try {
+                id = Integer.parseInt(cmd.split(" ")[2]);
+            } catch (Exception e) {
+                System.out.println("정수 입력하세요");
+            }
+            //parsing 까지
+
+            // 글 유무체크
+            SecSql sql = new SecSql();
+            sql.append("SELECT *");
+            sql.append("FROM `article`");
+            sql.append("WHERE `id` = ?", id);
+
+            Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+            if(articleMap.isEmpty()){
+                System.out.printf("%d번 글은 없습니다.\n", id);
+                return 0;
+            }
+
+            // 글 유무체크 끝
 
             System.out.println("== 글 수정 ==");
             System.out.print("새 제목 : ");
@@ -96,18 +165,19 @@ public class App {
             sql = new SecSql();
             sql.append("UPDATE `article`");
             sql.append("SET `updateDate` = NOW()");
-            if (newTitle.length() > 0){
+            if (newTitle.length() > 0) {
                 sql.append(", `title` = ?", newTitle);
             }
-            if (newBody.length() > 0){
-                sql.append(", `body` = ?", id);
-
-                DBUtil.update(conn, sql);
+            if (newBody.length() > 0) {
+                sql.append(", `body` = ?", newBody);
             }
+            sql.append("WHERE `id` = ?", id);
+
+            DBUtil.update(conn, sql);
             // DB update 까지
+
             System.out.printf("%d번 게시글이 수정되었습니다.\n", id);
-
-
+            
         } else if (cmd.equals("article write")) {
             System.out.print("제목 : ");
             String title = sc.nextLine().trim();
@@ -129,8 +199,8 @@ public class App {
 
             System.out.printf("%d번 게시글이 등록되었습니다.\n", id);
 
-
         } else if (cmd.equals("article list")) {
+
             List<Article> articleList = new ArrayList<>();
 
             SecSql sql = new SecSql();
@@ -144,7 +214,7 @@ public class App {
                 Article article = new Article(articleMap);
                 articleList.add(article);
             }
-            
+
             if (articleList.size() == 0) {
                 System.out.println("게시글이 없습니다.");
                 return 0;
@@ -154,10 +224,7 @@ public class App {
             for (Article article : articleList) {
                 System.out.printf("%d      /   %s\n", article.getId(), article.getTitle());
             }
-
         }
-
         return 0;
     }
-
 }
