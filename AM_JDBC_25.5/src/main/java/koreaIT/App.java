@@ -1,5 +1,6 @@
 package koreaIT;
 
+import koreaIT.controller.ArticleController;
 import koreaIT.controller.MemberController;
 import util.DBUtil;
 import util.SecSql;
@@ -21,7 +22,7 @@ public class App {
             System.out.print("명령어) ");
             String cmd = sc.nextLine().trim();
 
-            // DB conntion
+            // DB connection
             Connection conn = null;
 
             try {
@@ -55,52 +56,23 @@ public class App {
                 }
             }
             // DB connection 까지
+
         }
+
     }
 
     private int doAction(Connection conn, Scanner sc, String cmd) {
-        MemberController  memberController = new MemberController(conn, sc);
+        MemberController memberController = new MemberController(conn, sc);
+        ArticleController articleController = new ArticleController(conn, sc);
 
         if (cmd.equals("exit")) {
             return -1;
-
-
         } else if (cmd.equals("member join")) {
             memberController.doJoin();
         } else if (cmd.startsWith("article delete")) {
-            int id = 0;
 
-            //parsing
-            try {
-                id = Integer.parseInt(cmd.split(" ")[2]);
-            } catch (Exception e) {
-                System.out.println("정수 입력하세요");
-            }
-            //parsing 까지
-
-            // 글 유무체크
-            SecSql sql = new SecSql();
-            sql.append("SELECT *");
-            sql.append("FROM `article`");
-            sql.append("WHERE `id` = ?", id);
-
-            Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
-            if (articleMap.isEmpty()) {
-                System.out.printf("%d번 글은 없습니다.\n", id);
-                return 0;
-            }
-            // 글 유무체크 끝
-
-            sql = new SecSql();
-            sql.append("DELETE FROM `article`");
-            sql.append("WHERE `id` = ?", id);
-
-            DBUtil.delete(conn, sql);
-
-            System.out.printf("%d번 게시글이 삭제되었습니다.\n", id);
-
-        }
-        else if (cmd.startsWith("article detail")) {
+            articleController.doDelete(cmd);
+        } else if (cmd.startsWith("article detail")) {
             int id = 0;
 
             //parsing
@@ -134,6 +106,7 @@ public class App {
             System.out.println("제목 : " + article.getTitle());
             System.out.println("내용 : " + article.getBody());
 
+
         } else if (cmd.startsWith("article modify")) {
             int id = 0;
 
@@ -156,7 +129,6 @@ public class App {
                 System.out.printf("%d번 글은 없습니다.\n", id);
                 return 0;
             }
-
             // 글 유무체크 끝
 
             System.out.println("== 글 수정 ==");
@@ -181,6 +153,7 @@ public class App {
             // DB update 까지
 
             System.out.printf("%d번 게시글이 수정되었습니다.\n", id);
+
 
         } else if (cmd.equals("article write")) {
             System.out.print("제목 : ");
@@ -228,6 +201,7 @@ public class App {
             for (Article article : articleList) {
                 System.out.printf("%d      /   %s\n", article.getId(), article.getTitle());
             }
+
         }
         return 0;
     }
