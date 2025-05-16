@@ -177,7 +177,7 @@ public class App {
             // DB update 까지
 
             System.out.printf("%d번 게시글이 수정되었습니다.\n", id);
-            
+
         } else if (cmd.equals("article write")) {
             System.out.print("제목 : ");
             String title = sc.nextLine().trim();
