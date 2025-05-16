@@ -62,6 +62,79 @@ public class App {
             return -1;
 
         }
+
+        else if(cmd.equals("member join")){
+            String loginId = null;
+            String loginPw = null;
+            String name = null;
+
+            while (true) {
+                System.out.print("새 아이디 : ");
+                loginId = sc.nextLine().trim();
+                if (loginId.length() == 0 || loginId.contains(" ")) {
+                    System.out.println("아이디 똑바로 입력하시오.");
+                    continue;
+                }
+                // DB에 있는 아이디 중복체크
+                SecSql sql = new SecSql();
+
+                sql.append("SELECT COUNT(*) > 0");
+                sql.append("FROM `member`");
+                sql.append("WHERE `loginId` = ?;", loginId);
+
+                boolean isLoginJoin = DBUtil.selectRowBooleanValue(conn, sql);
+
+                if (isLoginJoin){
+                    System.out.println(loginId + "는(은) 이미 사용중입니다.");
+                    continue;
+                }
+                break;
+
+            }
+            while(true) {
+                System.out.print("새 비밀번호 : ");
+                loginPw = sc.nextLine();
+
+                if(loginPw.length() == 0 || loginPw.contains(" ")){
+                    System.out.println("비밀번호 똑바로 입력하시오.");
+                    continue;
+                }
+                System.out.print("비밀번호 확인 : ");
+                String loginPwCheck = sc.nextLine();
+                if(loginPw.equals(loginPwCheck) == false){
+                    System.out.println("비밀번호가 일치하지 않습니다.");
+                    continue;
+                }
+                break;
+            }
+
+            while(true) {
+                System.out.print("새 이름 : ");
+                name = sc.nextLine().trim();
+                if(name.length()==0 || name.contains(" ")){
+                    System.out.println("이름 똑바로 입력하시오.");
+                    continue;
+                }
+                break;
+            }
+
+            // DB insert
+            SecSql sql = new SecSql();
+
+            sql.append("INSERT INTO `member`");
+            sql.append("SET `regDate` = NOW(),");
+            sql.append("`updateDate` = NOW(),");
+            sql.append("`loginId` = ?,", loginId);
+            sql.append("`loginPw` = ?,", loginPw);
+            sql.append("`name` = ?;", name);
+
+            int id = DBUtil.insert(conn, sql);
+
+            // DB insert 까지
+
+            System.out.println(id + "번 회원 생성되었습니다.");
+        }
+
         else if (cmd.startsWith("article delete")){
             int id = 0;
 
