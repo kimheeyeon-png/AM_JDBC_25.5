@@ -1,5 +1,6 @@
 package koreaIT.controller;
 
+import koreaIT.service.MemberService;
 import util.DBUtil;
 import util.SecSql;
 
@@ -82,6 +83,5 @@ public class MemberController {
         // DB insert 까지
 
         System.out.println(id + "번 회원 생성되었습니다.");
-
     }
 }
