@@ -1,5 +1,6 @@
 package koreaIT.controller;
 
+import koreaIT.Member;
 import koreaIT.service.MemberService;
 
 import java.sql.Connection;
@@ -72,7 +73,44 @@ public class MemberController {
     }
 
     public void doLogin() {
+        String loginId;
+        String loginPw;
+        System.out.println("== 로그인 ==");
 
-        // todo
+        while (true) {
+            System.out.print("로그인 아이디 : ");
+            loginId = sc.nextLine().trim();
+            if (loginId.length() == 0 || loginId.contains(" ")) {
+                System.out.println("아이디 똑바로 입력하시오.");
+                continue;
+            }
+
+            boolean isLoginJoin = memberService.isLoginJoinable(loginId);
+
+            if (!isLoginJoin) {
+                System.out.println(loginId + "는(은) 없습니다.");
+                continue;
+            }
+            break;
+        }
+
+        // 로그인 아이디 있는 상황
+        Member member = memberService.getMemberByLoginId(loginId);
+
+        while (true) {
+            System.out.print("로그인 비밀번호 : ");
+            loginPw = sc.nextLine();
+
+            if (loginPw.length() == 0 || loginPw.contains(" ")) {
+                System.out.println("비밀번호를 똑바로 입력하시오.");
+                continue;
+            }
+
+            if (loginPw.equals(member.getLoginPw()) == false) {
+                System.out.println("비밀번호가 일치하지 않습니다.");
+                continue;
+            }
+            break;
+        }
     }
 }
