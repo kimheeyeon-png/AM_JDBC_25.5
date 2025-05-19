@@ -1,21 +1,18 @@
 package koreaIT.controller;
 
 import koreaIT.service.MemberService;
-import util.DBUtil;
-import util.SecSql;
 
 import java.sql.Connection;
 import java.util.Scanner;
 
 public class MemberController {
-    private MemberService memberService = new MemberService();
+    private MemberService memberService = null;
 
-    private Connection conn = null;
     private Scanner sc = null;
 
     public MemberController(Connection conn, Scanner sc) {
-        this.conn = conn;
         this.sc = sc;
+        this.memberService = new MemberService(conn);
     }
 
     public void doJoin() {
@@ -32,7 +29,7 @@ public class MemberController {
                 continue;
             }
 
-            boolean isLoginJoin = memberService.isLoginJoin(conn, loginId);
+            boolean isLoginJoin = memberService.isLoginJoinable(loginId);
 
             if (isLoginJoin) {
                 System.out.println(loginId + "는(은) 이미 사용중입니다.");
@@ -68,20 +65,14 @@ public class MemberController {
             break;
         }
 
-        // DB insert
-        SecSql sql = new SecSql();
-
-        sql.append("INSERT INTO `member`");
-        sql.append("SET `regDate` = NOW(),");
-        sql.append("`updateDate` = NOW(),");
-        sql.append("`loginId` = ?,", loginId);
-        sql.append("`loginPw` = ?,", loginPw);
-        sql.append("`name` = ?;", name);
-
-        int id = DBUtil.insert(conn, sql);
-
-        // DB insert 까지
+        int id = memberService.doJoin(loginId, loginPw, name);
 
         System.out.println(id + "번 회원 생성되었습니다.");
+
+    }
+
+    public void doLogin() {
+
+        // todo
     }
 }

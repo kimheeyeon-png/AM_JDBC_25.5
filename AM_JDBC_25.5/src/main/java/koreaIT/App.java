@@ -64,6 +64,8 @@ public class App {
 
         if (cmd.equals("exit")) {
             return -1;
+        } else if (cmd.equals("member login")){
+            memberController.doLogin();
         } else if (cmd.equals("member join")) {
             memberController.doJoin();
         } else if (cmd.startsWith("article delete")) {
@@ -76,6 +78,8 @@ public class App {
             articleController.doWrite();
         } else if (cmd.equals("article list")) {
             articleController.showList();
+        } else {
+            System.out.println("사용할 수 없는 명령어입니다.");
         }
         return 0;
     }
