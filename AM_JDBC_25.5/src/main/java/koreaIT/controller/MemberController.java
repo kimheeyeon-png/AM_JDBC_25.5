@@ -97,19 +97,30 @@ public class MemberController {
         // 로그인 아이디 있는 상황
         Member member = memberService.getMemberByLoginId(loginId);
 
+        int maxTryCount = 0;
+        int tryCount = 0;
+
         while (true) {
+            if (tryCount >= maxTryCount) {
+                System.out.println("제한 시도횟수가 초과되었습니다. 다시 시도해주세요.");
+                break;
+            }
+
             System.out.print("로그인 비밀번호 : ");
             loginPw = sc.nextLine();
 
             if (loginPw.length() == 0 || loginPw.contains(" ")) {
                 System.out.println("비밀번호를 똑바로 입력하시오.");
+                tryCount++;
                 continue;
             }
 
             if (loginPw.equals(member.getLoginPw()) == false) {
                 System.out.println("비밀번호가 일치하지 않습니다.");
+                tryCount++;
                 continue;
             }
+            System.out.println(member.getName() + "님 환영합니다.");
             break;
         }
     }
