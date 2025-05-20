@@ -1,17 +1,17 @@
 package koreaIT.service;
 
 import koreaIT.Member;
+import koreaIT.container.Container;
 import koreaIT.dao.MemberDao;
 
-import java.sql.Connection;
 import java.util.Map;
 
 public class MemberService {
 
     private MemberDao memberDao = null;
 
-    public MemberService(Connection conn) {
-        this.memberDao = new MemberDao(conn);
+    public MemberService() {
+        this.memberDao = Container.memberDao;
     }
 
     public boolean isLoginJoinable(String loginId) {

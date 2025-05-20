@@ -1,20 +1,20 @@
 package koreaIT.controller;
 
 import koreaIT.Article;
+import koreaIT.container.Container;
 import koreaIT.service.ArticleService;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class ArticleController {
-    private ArticleService articleService = null;
+    private ArticleService articleService;
     private Scanner sc;
 
-    public ArticleController(Connection conn, Scanner sc) {
-        this.sc = sc;
-        this.articleService = new ArticleService(conn);
+    public ArticleController() {
+        this.articleService = Container.articleService;
+        this.sc = Container.sc;
     }
 
     public void doDelete(String cmd) {
@@ -118,6 +118,8 @@ public class ArticleController {
     }
 
     public void showList() {
+
+        System.out.println(articleService);
 
         List<Article> articleList = articleService.getArticles();
 

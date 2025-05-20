@@ -1,25 +1,25 @@
 package koreaIT.service;
 
 import koreaIT.Article;
+import koreaIT.container.Container;
 import koreaIT.dao.ArticleDao;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ArticleService {
 
-    private ArticleDao articleDao = null;
+    private ArticleDao articleDao;
     private List<Article> articleList = new ArrayList<>();
 
-    public ArticleService(Connection conn) {
-        this.articleDao = new ArticleDao(conn);
-    }
+   public ArticleService() {
+       this.articleDao = Container.articleDao;
+   }
 
     public List<Article> getArticles() {
 
-        List<Map<String, Object>> articleListMap = articleDao.getArticle();
+        List<Map<String, Object>> articleListMap = articleDao.getArticles();
 
         for (Map<String, Object> articleMap : articleListMap) {
             Article article = new Article(articleMap);

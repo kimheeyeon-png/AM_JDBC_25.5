@@ -4,17 +4,15 @@ import koreaIT.Member;
 import koreaIT.container.Container;
 import koreaIT.service.MemberService;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 public class MemberController {
     private MemberService memberService = null;
+    private Scanner sc;
 
-    private Scanner sc = null;
-
-    public MemberController(Connection conn, Scanner sc) {
-        this.sc = sc;
-        this.memberService = new MemberService(conn);
+    public MemberController() {
+        this.memberService = Container.memberService;
+        this.sc = Container.sc;
     }
 
     public void doJoin() {

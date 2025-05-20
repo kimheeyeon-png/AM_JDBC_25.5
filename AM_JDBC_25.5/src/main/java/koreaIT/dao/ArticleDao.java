@@ -1,5 +1,6 @@
 package koreaIT.dao;
 
+import koreaIT.container.Container;
 import util.DBUtil;
 import util.SecSql;
 
@@ -9,13 +10,13 @@ import java.util.Map;
 
 public class ArticleDao {
 
-    private Connection conn = null;
+    private Connection conn;
 
-    public ArticleDao(Connection conn) {
-        this.conn = conn;
+    public ArticleDao() {
+        this.conn = Container.conn;
     }
 
-    public List<Map<String, Object>> getArticle() {
+    public List<Map<String, Object>> getArticles() {
         SecSql sql = new SecSql();
         sql.append("SELECT *");
         sql.append("FROM `article`");
