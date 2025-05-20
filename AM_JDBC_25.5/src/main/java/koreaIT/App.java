@@ -1,5 +1,6 @@
 package koreaIT;
 
+import koreaIT.container.Container;
 import koreaIT.controller.ArticleController;
 import koreaIT.controller.MemberController;
 
@@ -9,6 +10,10 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class App {
+
+    public App() {
+        Container.init();
+    }
 
     public void run() {
 
