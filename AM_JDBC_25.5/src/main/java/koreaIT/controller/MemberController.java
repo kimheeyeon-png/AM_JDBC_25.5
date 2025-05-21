@@ -1,6 +1,6 @@
 package koreaIT.controller;
 
-import koreaIT.Member;
+import koreaIT.dto.Member;
 import koreaIT.container.Container;
 import koreaIT.service.MemberService;
 

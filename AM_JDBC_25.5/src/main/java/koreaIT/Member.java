@@ -1,4 +1,4 @@
-package koreaIT;
+package koreaIT.dto;
 
 import java.util.Map;
 

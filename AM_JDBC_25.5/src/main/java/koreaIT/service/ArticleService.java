@@ -1,6 +1,6 @@
 package koreaIT.service;
 
-import koreaIT.Article;
+import koreaIT.dto.Article;
 import koreaIT.container.Container;
 import koreaIT.dao.ArticleDao;
 

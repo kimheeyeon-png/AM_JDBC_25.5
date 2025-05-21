@@ -1,6 +1,6 @@
 package koreaIT.service;
 
-import koreaIT.Member;
+import koreaIT.dto.Member;
 import koreaIT.container.Container;
 import koreaIT.dao.MemberDao;
 

@@ -1,6 +1,6 @@
 package jdbc;
 
-import koreaIT.Article;
+import koreaIT.dto.Article;
 
 import java.sql.*;
 import java.util.ArrayList;
