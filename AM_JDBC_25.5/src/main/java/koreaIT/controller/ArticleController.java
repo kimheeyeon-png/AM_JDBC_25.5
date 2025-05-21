@@ -108,6 +108,11 @@ public class ArticleController {
 
     public void doWrite() {
 
+        if (!Container.session.isLogined()) {
+            System.out.println("로그인 후 이용하세요");
+            return;
+        }
+
         System.out.print("제목 : ");
         String title = sc.nextLine().trim();
         System.out.print("내용 : ");

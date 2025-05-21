@@ -70,6 +70,7 @@ public class ArticleDao {
         sql.append("INSERT INTO `article`");
         sql.append("SET `regDate` = NOW(),");
         sql.append("`updateDate` = NOW(),");
+        sql.append("`member` = ?,", Container.session.loginedMember);
         sql.append("`title` = ?,", title);
         sql.append("`body` = ?;", body);
 
