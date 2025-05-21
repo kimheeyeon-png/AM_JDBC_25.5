@@ -119,9 +119,7 @@ public class ArticleController {
 
     public void showList() {
 
-        System.out.println(articleService);
-
-        List<Article> articleList = articleService.getArticles();
+        List<Article> articleList = Container.articleService.getArticles();
 
 
         if (articleList.size() == 0) {

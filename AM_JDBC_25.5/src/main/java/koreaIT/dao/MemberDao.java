@@ -9,10 +9,7 @@ import java.util.Map;
 
 public class MemberDao {
 
-    private Connection conn;
-
     public MemberDao() {
-        this.conn = Container.conn;
     }
 
     public boolean isLoginJoinable(String loginId) {
@@ -24,7 +21,7 @@ public class MemberDao {
         sql.append("FROM `member`");
         sql.append("WHERE `loginId` = ?;", loginId);
 
-        return DBUtil.selectRowBooleanValue(conn, sql);
+        return DBUtil.selectRowBooleanValue(Container.conn, sql);
     }
 
     public int doJoin(String loginId, String loginPw, String name) {
@@ -37,7 +34,7 @@ public class MemberDao {
         sql.append("`loginPw` = ?,", loginPw);
         sql.append("`name` = ?;", name);
 
-        int id = DBUtil.insert(conn, sql);
+        int id = DBUtil.insert(Container.conn, sql);
         return id;
     }
 
@@ -48,7 +45,7 @@ public class MemberDao {
         sql.append("FROM `member`");
         sql.append("WHERE `loginId` = ?;", loginId);
 
-        Map<String, Object> memberMap =  DBUtil.selectRow(conn, sql);
+        Map<String, Object> memberMap =  DBUtil.selectRow(Container.conn, sql);
 
         return memberMap;
     }

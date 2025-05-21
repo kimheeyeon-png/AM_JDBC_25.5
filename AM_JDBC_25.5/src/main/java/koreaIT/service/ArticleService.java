@@ -11,13 +11,13 @@ import java.util.Map;
 public class ArticleService {
 
     private ArticleDao articleDao;
-    private List<Article> articleList = new ArrayList<>();
 
    public ArticleService() {
        this.articleDao = Container.articleDao;
    }
 
     public List<Article> getArticles() {
+       List<Article> articleList = new ArrayList<>();
 
         List<Map<String, Object>> articleListMap = articleDao.getArticles();
 

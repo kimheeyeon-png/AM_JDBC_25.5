@@ -30,13 +30,13 @@ public class Container {
         session = new Session();
         sc = new Scanner(System.in);
 
-        articleController = new ArticleController();
-        memberController = new MemberController();
+        articleDao = new ArticleDao();
+        memberDao = new MemberDao();
 
         articleService = new ArticleService();
         memberService = new MemberService();
 
-        articleDao = new ArticleDao();
-        memberDao = new MemberDao();
+        articleController = new ArticleController();
+        memberController = new MemberController();
     }
 }
