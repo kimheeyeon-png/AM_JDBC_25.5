@@ -69,9 +69,10 @@ public class ArticleController {
         System.out.println("번호 : " + article.getId());
         System.out.println("등록날짜 : " + article.getRegDate());
         System.out.println("수정날짜 : " + article.getUpdateDate());
+//        System.out.println("작성자번호 : " + article.getMemberId());
+        System.out.println("작성자 : " + article.getName());
         System.out.println("제목 : " + article.getTitle());
         System.out.println("내용 : " + article.getBody());
-
 
     }
 
@@ -127,9 +128,9 @@ public class ArticleController {
             return;
         }
 
-        System.out.println("번호    /     제목");
+        System.out.println("번호    /     제목      /     작성자");
         for (Article article : articleList) {
-            System.out.printf("%d      /   %s\n", article.getId(), article.getTitle());
+            System.out.printf("%d      /   %s      /   %s\n", article.getId(), article.getTitle(), article.getName());
         }
     }
 }
