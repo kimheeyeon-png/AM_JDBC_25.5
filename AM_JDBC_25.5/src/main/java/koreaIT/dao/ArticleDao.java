@@ -12,13 +12,20 @@ public class ArticleDao {
     public ArticleDao() {
     }
 
-    public List<Map<String, Object>> getArticles() {
+    public List<Map<String, Object>> getArticles(int page) {
+        if (page <= 0) {
+            page = 1;
+        }
+
+        page = (page * 10) - 10;
+
         SecSql sql = new SecSql();
         sql.append("SELECT *");
         sql.append("FROM `article` a");
-        sql.append("INNER JOIN `member` m");
-        sql.append("ON a.memberId = m.id");
+       // sql.append("INNER JOIN `member` m");
+       // sql.append("ON a.memberId = m.id");
         sql.append("ORDER BY a.`id` DESC;");
+        sql.append("LIMIT ?, 10", page);
 
         List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
 

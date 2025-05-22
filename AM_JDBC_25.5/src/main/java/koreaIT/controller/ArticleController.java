@@ -151,9 +151,19 @@ public class ArticleController {
         System.out.printf("%d번 게시글이 등록되었습니다.\n", id);
     }
 
-    public void showList() {
+    public void showList(String cmd) {
 
-        List<Article> articleList = Container.articleService.getArticles();
+        int page = 0;
+
+        // parsing
+        try {
+            page = Integer.parseInt(cmd.split(" ")[2]);
+        } catch (Exception e) {
+            System.out.println("정수 입력하세요");
+        }
+        // parsing 까지
+
+        List<Article> articleList = Container.articleService.getArticles(page);
 
 
         if (articleList.size() == 0) {
