@@ -153,18 +153,24 @@ public class ArticleController {
 
     public void showList(String cmd) {
 
+        String[] cmdBits = cmd.split(" ");
+
         int page = 0;
+        String searchKeyword = null;
 
         // parsing
         try {
-            page = Integer.parseInt(cmd.split(" ")[2]);
+            page = Integer.parseInt(cmd.split(cmdBits[2]);
         } catch (Exception e) {
             System.out.println("정수 입력하세요");
         }
         // parsing 까지
 
-        List<Article> articleList = Container.articleService.getArticles(page);
+        if (cmdBits.length >= 4) {
+            searchKeyword = cmdBits[3];
+        }
 
+        List<Article> articleList = Container.articleService.getArticles(page, searchKeyword);
 
         if (articleList.size() == 0) {
             System.out.println("게시글이 없습니다.");

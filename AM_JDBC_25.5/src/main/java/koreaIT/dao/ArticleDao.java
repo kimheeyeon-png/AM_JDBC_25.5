@@ -12,7 +12,7 @@ public class ArticleDao {
     public ArticleDao() {
     }
 
-    public List<Map<String, Object>> getArticles(int page) {
+    public List<Map<String, Object>> getArticles(int page, String searchKeyword) {
         if (page <= 0) {
             page = 1;
         }
@@ -22,17 +22,15 @@ public class ArticleDao {
         SecSql sql = new SecSql();
         sql.append("SELECT *");
         sql.append("FROM `article` a");
-       // sql.append("INNER JOIN `member` m");
-       // sql.append("ON a.memberId = m.id");
+        sql.append("INNER JOIN `member` m");
+        sql.append("ON a.memberId = m.id");
+        if (searchKeyword != null) {
+            sql.append("WHERE a.title LIKE CONCAT('%', ?, '%')", searchKeyword);
+        }
         sql.append("ORDER BY a.`id` DESC;");
-        sql.append("LIMIT ?, 10", page);
+        sql.append("LIMIT ?, 10;", page);
 
         List<Map<String, Object>> articleListMap = DBUtil.selectRows(Container.conn, sql);
-
-//        DB에서 어떤 데이터 왔는지 확인
-//        for (Map<String, Object> articleMap : articleListMap){
-//            System.out.println(articleMap.toString());
-//        }
 
         return articleListMap;
     }
